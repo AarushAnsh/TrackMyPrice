@@ -26,12 +26,7 @@ export async function POST(request) {
     const token = getBearerToken(authHeader);
 
     if (!cronSecret || token !== cronSecret) {
-      return NextResponse.json({
-  authHeader,
-  token,
-  cronSecret,
-  equal: token === cronSecret,
-});
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const supabase = createAdminClient();
