@@ -26,7 +26,12 @@ export async function POST(request) {
     const token = getBearerToken(authHeader);
 
     if (!cronSecret || token !== cronSecret) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({
+  authHeader,
+  token,
+  cronSecret,
+  equal: token === cronSecret,
+});
     }
 
     const supabase = createAdminClient();
@@ -121,3 +126,5 @@ export async function POST(request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+// curl.exe -X POST https://track-my-price-mu.vercel.app/api/crone/check-prices -H "Authorization: Bearer 7eea25d3c15915dcf1a0ca023f41141f057ac2a1194b6acc169a8c2558fd1f80"
