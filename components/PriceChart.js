@@ -58,7 +58,7 @@ export default function PriceChart({ productId, currency = "USD" }) {
       <h4 className="mb-3 text-sm font-semibold text-foreground">
         Price History
       </h4>
-      <div className="h-50 w-full">
+      <div className="h-[200px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
