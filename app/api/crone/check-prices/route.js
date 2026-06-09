@@ -2,7 +2,7 @@ import { scrapeProduct } from "@/lib/firecrawl";
 import { createClient } from "@/utils/supabase/server";
 import { Currency } from "lucide-react";
 import { NextRequest, NextResponse } from "next/server";
-import {sendPriceDropAlert} from "@/lib/emali";
+import {sendPriceDropAlert} from "@/lib/email";
 
 export async function GET() {
 
