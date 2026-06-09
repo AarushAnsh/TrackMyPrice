@@ -121,15 +121,17 @@ export async function getProducts() {
 }
 
 export async function getPriceHistory(productId) {
-
     try{
-        const supabase =createClient();
+        const supabase = await createClient();
 
         const{data,error}=await supabase
           .from("price_history")
           .select("*")
           .eq("product_id",productId)
           .order("created_at",{ascending:true});
+
+        if(error) throw error;
+        return data || [];
     }
     catch(error){
       console.error("Get price history error:",error);

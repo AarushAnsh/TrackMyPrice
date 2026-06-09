@@ -1,131 +1,148 @@
 import AddProductForm from "@/components/AddProductForm";
 import AuthButton from "@/components/AuthButton";
-import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
-import { LogIn,Rabbit,Shield,Bell, TrendingDown } from "lucide-react";
+import { Rabbit, Shield, Bell, TrendingDown, Sparkles } from "lucide-react";
 import Image from "next/image";
 import { getProducts } from "./actions";
 import ProductCard from "@/components/ProductCard";
 
 export default async function Home() {
-
   const supabase = await createClient();
-
   const {
-    data : {user},
+    data: { user },
   } = await supabase.auth.getUser();
 
-  const products = user ? await getProducts():[];
+  const products = user ? await getProducts() : [];
+
   const FEATURES = [
-    {  
+    {
       icon: Rabbit,
       title: "Lightning Fast",
       description:
-        "Deal Drop extracts prices in seconds, handling JavaScript and dynamic content",
+        "Extract prices in seconds — handles JavaScript and dynamic content automatically.",
     },
     {
       icon: Shield,
       title: "Always Reliable",
       description:
-        "Works across all major e-commerce sites with built-in anti-bot protection",
+        "Works across major e-commerce sites with built-in anti-bot protection.",
     },
     {
       icon: Bell,
       title: "Smart Alerts",
-      description: "Get notified instantly when prices drop below your target",
+      description: "Get email notifications the moment a price drops.",
     },
   ];
 
-
-
-
   return (
-    <main className="min-h-screen bg-linear-to-br from-orange-50 via-white to-orange-50">
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-           <div className="flex items-center gap-3 ">
-             <Image                
-               src={"/dealdrop.png"} alt="Deal Drop Logo"
-               width={600}
-               height={200}
-               className="h-10 w-auto"
-               />
-           </div> 
-           {/*  auth btn */}
-           <AuthButton user={user}/>
+    <div className="flex min-h-screen flex-col">
+      <header className="sticky top-0 z-50 border-b border-border/80 bg-background/90 backdrop-blur-lg">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
+          <Image
+            src="/dealdrop.png"
+            alt="Deal Drop"
+            width={600}
+            height={200}
+            priority
+            className="h-10 w-auto object-contain sm:h-12 md:h-14"
+          />
+          <AuthButton user={user} />
         </div>
       </header>
-      <section className="py-20 px-4">
-       <div className="max-w-7xl mx-auto text-center"> 
-       <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-6 py-2 rounded-full text-sm font-medium mb-6">
-            Made with ❤️ by Roadside Coder
-          </div> 
 
-       <h2 className="text-5xl font-bold text-gray-900 mb-4 tracking-tight">Never Miss a price Drop</h2>
-
-       <p className="text-xl text-gray-600 mb-12   max-w-2xl mx-auto">
-            Track prices from any e-commerce site. Get instant alerts when
-            prices drop. Save money effortlessly.
-        </p>
-       </div> 
-        {/* form*/}
-        <AddProductForm user={user}/>
-
-
-        {/* Features*/}
-
-        { products.length===0 &&
-         (
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-16">
-            {FEATURES.map(({icon:Icon,title,description})=>(
-              <div
-                key={title}
-                className="bg-white p-6 rounded-xl border border-gray-200"
-              > 
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                <Icon className="w-6 h-6  text-orange-500"/>
+      <main className="flex-1">
+        <section className="border-b border-border/60 bg-linear-to-b from-slate-50/80 to-background">
+          <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20 md:py-24">
+            <div className="mx-auto max-w-3xl text-center">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-1.5 text-sm text-muted-foreground shadow-sm">
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+                Smart price tracking for online shoppers
               </div>
 
-              <h3 className="font-semibold text-grey-900 mb-2">{title}</h3> 
-              <p className="text-sm text-gray-600">{description}</p>                           
-              </div>
-            )
+              <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl md:leading-tight">
+                Never Miss a Price Drop
+              </h1>
 
-            )}
-          </div>
-         )
-        }
-      </section>
+              <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:mt-5 sm:text-lg">
+                Paste any product URL, track the price automatically, and get
+                alerted when it falls — save money without checking every day.
+              </p>
+            </div>
 
-      {user && products.length>0 &&
-       <section className="max-w-7xl mx-auto px-4 pb-20">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-bold text-gray-900">Your Tracked Products</h3>
-         
-          <span className="text-sm text-gray-500">
-            {products.length} {products.length===1 ? "product" : "products"}
-          </span>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2 items-start">
-        {
-          products.map((product)=><ProductCard key={product.id} product={product}/>)
-        }
-
-        </div>
-       </section>}
-
-      {user && products.length ===0 && (
-        <section className="max-w-2xl mx-auto px-4 pb-20 text-center">
-          <div className="bg-white rounded-xl border-2 border-dashed border-gray-300 p-12">
-            <TrendingDown className="w-16 h-16  text-gray-400 mx-auto mb-4"/>
-            <h3 className="text-xl- font-semibold text-gray-900 mb-2">
-              No Products Yet
-            </h3>
-            <p className="text-gray-600">Add Your First Product above to start tracking prices!</p>
+            <div className="mx-auto mt-10 max-w-2xl sm:mt-12">
+              <AddProductForm user={user} />
+            </div>
           </div>
         </section>
-      )}
 
-    </main>
+        {products.length === 0 && (
+          <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
+              {FEATURES.map(({ icon: Icon, title, description }) => (
+                <div
+                  key={title}
+                  className="rounded-xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
+                >
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-muted">
+                    <Icon className="h-5 w-5 text-foreground" />
+                  </div>
+                  <h3 className="font-semibold text-foreground">{title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {user && products.length > 0 && (
+          <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+            <div className="mb-6 flex flex-col gap-1 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h2 className="text-2xl font-bold tracking-tight text-foreground">
+                  Your Tracked Products
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Monitor prices and view history for each product.
+                </p>
+              </div>
+              <span className="text-sm font-medium text-muted-foreground">
+                {products.length} {products.length === 1 ? "product" : "products"}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {user && products.length === 0 && (
+          <section className="mx-auto max-w-lg px-4 pb-16 sm:px-6 sm:pb-20">
+            <div className="rounded-xl border border-dashed border-border bg-card p-8 text-center shadow-sm sm:p-12">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-muted">
+                <TrendingDown className="h-7 w-7 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">
+                No products yet
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Paste a product link above to start tracking its price.
+              </p>
+            </div>
+          </section>
+        )}
+      </main>
+
+      <footer className="mt-auto border-t border-border bg-background">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-6 text-center text-sm text-muted-foreground sm:flex-row sm:px-6 sm:text-left">
+          <p>© {new Date().getFullYear()} Deal Drop. All rights reserved.</p>
+          <p>Track smarter. Spend less.</p>
+        </div>
+      </footer>
+    </div>
   );
 }
