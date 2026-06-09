@@ -107,3 +107,6 @@ return NextResponse.json({
     return NextResponse.json({error:error.message},{status:500});
     }
 }
+
+// curl -X POST https://dealdrop.vercel.app/api/crone/check-prices \
+// -H "Authorizaton:Bearer Your_cron_secret"
