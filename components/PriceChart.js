@@ -21,13 +21,20 @@ export default function PriceChart({ productId, currency = "USD" }) {
     async function loadData() {
       const history = await getPriceHistory(productId);
 
-      const chartData = history.map((item) => ({
-        date: new Date(item.created_at).toLocaleDateString(undefined, {
-          month: "short",
-          day: "numeric",
-        }),
-        price: parseFloat(item.price),
-      }));
+      const chartData = history.map((item) => {
+        const timestamp = item.checked_at || item.created_at;
+        const parsedDate = new Date(timestamp);
+        return {
+          date: parsedDate.toLocaleString(undefined, {
+            month: "numeric",
+            day: "numeric",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          price: parseFloat(item.price),
+        };
+      });
 
       setData(chartData);
       setLoading(false);
@@ -95,8 +102,9 @@ export default function PriceChart({ productId, currency = "USD" }) {
               dataKey="price"
               stroke="var(--primary)"
               strokeWidth={2}
-              dot={{ fill: "var(--primary)", r: 3 }}
-              activeDot={{ r: 5 }}
+              dot={{ fill: "var(--primary)", r: 4 }}
+              activeDot={{ r: 6 }}
+              connectNulls
             />
           </LineChart>
         </ResponsiveContainer>
