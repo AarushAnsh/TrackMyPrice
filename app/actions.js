@@ -72,7 +72,8 @@ export async function addProduct(formData) {
       !isUpdate || existingProduct.current_price !== newPrice;
 
     if (shouldAddHistory) {
-      const { error: historyError } = await supabase
+      const admin = createAdminClient();
+      const { error: historyError } = await admin
         .from("price_history")
         .insert({
           product_id: product.id,
