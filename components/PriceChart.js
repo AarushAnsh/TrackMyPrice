@@ -11,9 +11,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { getPriceHistory } from "@/app/actions";
+import { normalizeCurrencyCode } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
 export default function PriceChart({ productId, currency = "USD" }) {
+  const currencyCode = normalizeCurrencyCode(currency);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -85,7 +87,7 @@ export default function PriceChart({ productId, currency = "USD" }) {
               formatter={(value) => [
                 new Intl.NumberFormat(undefined, {
                   style: "currency",
-                  currency,
+                  currency: currencyCode,
                 }).format(value),
                 "Price",
               ]}

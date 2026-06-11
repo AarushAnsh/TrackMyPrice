@@ -1,4 +1,5 @@
 import { scrapeProduct } from "@/lib/firecrawl";
+import { normalizeCurrencyCode } from "@/lib/utils";
 import { createAdminClient } from "@/utils/supabase/admin";
 import { NextResponse } from "next/server";
 import { sendPriceDropAlert } from "@/lib/email";
@@ -56,7 +57,10 @@ export async function POST(request) {
 
         const newPrice = parseFloat(productData.currentPrice);
         const oldPrice = parseFloat(product.current_price);
-        const currency = productData.currencyCode || product.currency || "INR";
+        const currency = normalizeCurrencyCode(
+          productData.currencyCode || product.currency,
+          "INR"
+        );
 
         const { error: updateError } = await supabase
           .from("products")

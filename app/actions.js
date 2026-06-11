@@ -1,6 +1,7 @@
 "use server";
 
 import { scrapeProduct } from "@/lib/firecrawl";
+import { normalizeCurrencyCode } from "@/lib/utils";
 import { createAdminClient } from "@/utils/supabase/admin";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
@@ -35,7 +36,7 @@ export async function addProduct(formData) {
     }
 
     const newPrice = parseFloat(productData.currentPrice);
-    const currency = productData.currencyCode || "INR";
+    const currency = normalizeCurrencyCode(productData.currencyCode, "INR");
 
     const { data: existingProduct } = await supabase
       .from("products")

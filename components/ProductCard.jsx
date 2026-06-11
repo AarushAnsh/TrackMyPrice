@@ -21,16 +21,14 @@ import {
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
+import { normalizeCurrencyCode } from "@/lib/utils";
 
 function formatPrice(currency, price) {
-  try {
-    return new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency: currency || "USD",
-    }).format(Number(price));
-  } catch {
-    return `${currency || "USD"} ${price}`;
-  }
+  const currencyCode = normalizeCurrencyCode(currency);
+  return new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: currencyCode,
+  }).format(Number(price));
 }
 
 const ProductCard = ({ product }) => {
