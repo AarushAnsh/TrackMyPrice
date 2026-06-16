@@ -2,7 +2,6 @@ import AddProductForm from "@/components/AddProductForm";
 import AuthButton from "@/components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
 import { Rabbit, Shield, Bell, TrendingDown, Sparkles } from "lucide-react";
-import Image from "next/image";
 import { getProducts } from "./actions";
 import ProductCard from "@/components/ProductCard";
 
@@ -38,14 +37,12 @@ export default async function Home() {
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-50 border-b border-border/80 bg-background/90 backdrop-blur-lg">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
-          <Image
-            src="/dealdrop.png"
-            alt="Deal Drop"
-            width={600}
-            height={200}
-            priority
-            className="h-10 w-auto object-contain sm:h-12 md:h-14"
-          />
+          <div className="flex items-center gap-2">
+            <TrendingDown className="h-7 w-7 text-primary sm:h-8 sm:w-8" />
+            <span className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+              TrackMyPrice
+            </span>
+          </div>
           <AuthButton user={user} />
         </div>
       </header>
@@ -139,7 +136,7 @@ export default async function Home() {
 
       <footer className="mt-auto border-t border-border bg-background">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-6 text-center text-sm text-muted-foreground sm:flex-row sm:px-6 sm:text-left">
-          <p>© {new Date().getFullYear()} Deal Drop. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} TrackMyPrice. All rights reserved.</p>
           <p>Track smarter. Spend less.</p>
         </div>
       </footer>

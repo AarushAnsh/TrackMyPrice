@@ -34,7 +34,7 @@ export function AuthModal({ isOpen, onClose }) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Sign in to Deal Drop</DialogTitle>
+          <DialogTitle>Sign in to TrackMyPrice</DialogTitle>
           <DialogDescription>
             Track product prices and get email alerts when prices drop.
           </DialogDescription>

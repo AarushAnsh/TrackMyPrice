@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Deal Drop — Price Tracking & Alerts",
+  title: "TrackMyPrice — Price Tracking & Alerts",
   description: "Track product prices from any store and get notified when prices drop.",
 };
 
