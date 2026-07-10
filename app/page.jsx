@@ -5,7 +5,12 @@ import { Rabbit, Shield, Bell, TrendingDown, Sparkles } from "lucide-react";
 import { getProducts } from "./actions";
 import ProductCard from "@/components/ProductCard";
 
-export default async function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home({ searchParams }) {
+  const params = await searchParams;
+  const authError = params?.auth_error;
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -48,6 +53,11 @@ export default async function Home() {
       </header>
 
       <main className="flex-1">
+        {authError && (
+          <div className="border-b border-destructive/30 bg-destructive/10 px-4 py-3 text-center text-sm text-destructive">
+            Login failed: {authError}
+          </div>
+        )}
         <section className="border-b border-border/60 bg-linear-to-b from-slate-50/80 to-background">
           <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20 md:py-24">
             <div className="mx-auto max-w-3xl text-center">

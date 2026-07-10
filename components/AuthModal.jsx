@@ -18,16 +18,18 @@ export function AuthModal({ isOpen, onClose }) {
 
   const handleGoogleLogin = async () => {
     setLoading(true);
-    const { origin } = window.location;
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 
-    if (error) setLoading(false);
+    if (error) {
+      console.error("Google login failed:", error.message);
+      setLoading(false);
+    }
   };
 
   return (

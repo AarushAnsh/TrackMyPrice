@@ -32,7 +32,12 @@ export async function GET(request) {
     if (!error) {
       return supabaseResponse;
     }
+
+    console.error("Auth callback error:", error.message);
+    return NextResponse.redirect(
+      new URL(`/?auth_error=${encodeURIComponent(error.message)}`, origin)
+    );
   }
 
-  return NextResponse.redirect(new URL("/", origin));
+  return NextResponse.redirect(new URL("/?auth_error=missing_code", origin));
 }

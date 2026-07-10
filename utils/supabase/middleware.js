@@ -21,8 +21,8 @@ export async function updateSession(request) {
       },
 
       setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) => {
-          request.cookies.set(name, value);
+        cookiesToSet.forEach(({ name, value, options }) => {
+          request.cookies.set(name, value, options);
         });
 
         supabaseResponse = NextResponse.next({
@@ -36,11 +36,8 @@ export async function updateSession(request) {
     },
   });
 
-  const { error } = await supabase.auth.getUser();
-
-  if (error) {
-    await supabase.auth.signOut();
-  }
+  // Refresh auth session without force-signing out on transient errors.
+  await supabase.auth.getUser();
 
   return supabaseResponse;
 }
